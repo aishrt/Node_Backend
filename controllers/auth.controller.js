@@ -15,7 +15,9 @@ const register = catchAsync(async (req, res) => {
     const user = await User.create(req.body);
     return res.status(200).json({
       status: "200",
-      message: `${req.body.role} registered successfully.`,
+      message: `${
+        req.body.role === "admin" ? "Admin" : "User"
+      } registered successfully.`,
       data: user,
     });
   } catch (error) {

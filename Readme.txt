@@ -32,3 +32,62 @@ validator: ^13.11.0 - Library for data validation.
 Author:
 Aishwarya Raj Tyagi
 #art
+
+
+
+
+---- Curl --------
+
+Register :
+
+curl --location 'http://localhost:4004/auth/register' \
+--header 'Accept: application/json, text/plain, */*' \
+--header 'Accept-Language: en-GB,en-US;q=0.9,en;q=0.8' \
+--header 'Connection: keep-alive' \
+--header 'Content-Type: application/json' \
+--header 'DNT: 1' \
+--header 'Origin: http://localhost:3000' \
+--header 'Referer: http://localhost:3000/' \
+--header 'Sec-Fetch-Dest: empty' \
+--header 'Sec-Fetch-Mode: cors' \
+--header 'Sec-Fetch-Site: same-site' \
+--header 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36' \
+--header 'sec-ch-ua: "Google Chrome";v="119", "Chromium";v="119", "Not?A_Brand";v="24"' \
+--header 'sec-ch-ua-mobile: ?0' \
+--header 'sec-ch-ua-platform: "Windows"' \
+--data-raw '{
+    "first_name": "Aishwarya Raj",
+    "last_name": "Tyagi",
+    "phone_number": "7451020300",
+    "email": "aish@gmail.com",
+    "password": "123@aish",
+    "role": "user",
+    "address": "Up 11 Saharanpur"
+}'
+
+
+-------------------------------------------------------
+
+Login
+
+curl --location 'http://localhost:4004/auth/login' \
+--header 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' \
+--header 'Accept-Language: en-GB,en-US;q=0.9,en;q=0.8' \
+--header 'Cache-Control: max-age=0' \
+--header 'Connection: keep-alive' \
+--header 'DNT: 1' \
+--header 'Referer: http://localhost:3000/login' \
+--header 'Sec-Fetch-Dest: document' \
+--header 'Sec-Fetch-Mode: navigate' \
+--header 'Sec-Fetch-Site: same-origin' \
+--header 'Sec-Fetch-User: ?1' \
+--header 'Upgrade-Insecure-Requests: 1' \
+--header 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36' \
+--header 'sec-ch-ua: "Google Chrome";v="119", "Chromium";v="119", "Not?A_Brand";v="24"' \
+--header 'sec-ch-ua-mobile: ?0' \
+--header 'sec-ch-ua-platform: "Windows"' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "email": "aish@gmail.com",
+    "password": "123@aish"
+}'

@@ -1,10 +1,10 @@
 const allRoles = {
-  manager: [],
-  employee: [],
+  user: [],
+  admin: [],
 };
 
-const roles = Object.keys(allRoles);
+const roleNames = Object.keys(allRoles);
 
 module.exports = {
-  roles,
+  roleNames,
 };

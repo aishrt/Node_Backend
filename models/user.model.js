@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const { toJSON, paginate } = require("./plugins");
+const { roleNames } = require("../config/roles");
 
 const userSchema = mongoose.Schema(
   {
@@ -37,6 +38,11 @@ const userSchema = mongoose.Schema(
         }
       },
     },
+    role: {
+      type: String,
+      enum: roleNames,
+      default: "user",
+    },
     password: {
       type: String,
       trim: true,
@@ -49,9 +55,6 @@ const userSchema = mongoose.Schema(
         }
       },
       private: true,
-    },
-    role: {
-      type: String,
     },
   },
   {
