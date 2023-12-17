@@ -7,8 +7,8 @@ const { tokenService } = require("../services");
 const register = catchAsync(async (req, res) => {
   try {
     if (await User.isEmailTaken(req.body.email)) {
-      return res.status(201).json({
-        status: "201",
+      return res.status(401).json({
+        status: "401",
         message: `Email already registered.`,
       });
     }
@@ -35,13 +35,13 @@ const login = catchAsync(async (req, res) => {
 
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(200).json({
+      return res.status(400).json({
         status: "400",
         message: "User not found",
       });
     }
     if (!(await user.isPasswordMatch(password))) {
-      return res.status(200).json({
+      return res.status(400).json({
         status: "400",
         message: "Incorrect password",
       });
@@ -50,8 +50,7 @@ const login = catchAsync(async (req, res) => {
     return res.status(200).json({
       status: "200",
       message: "User logged in successfully.",
-      data: user,
-      tokens,
+      data: { user, tokens },
     });
   } catch (error) {
     return res.status(500).json({
