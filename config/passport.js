@@ -1,0 +1,34 @@
+const { Strategy: JwtStrategy, ExtractJwt } = require("passport-jwt");
+const config = require("./config");
+const { tokenTypes } = require("./tokens");
+const { User } = require("../models");
+
+const jwtOptions = {
+  secretOrKey: "thisisasamplesecret",
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+};
+
+const jwtVerify = async (payload, done) => {
+  try {
+    console.log("JWT Payload:", payload);
+    const decodedPayload = Buffer.from(payload, "hex").toString("utf-8");
+    console.log("JWT decodedPayload:", decodedPayload);
+
+    if (payload.type !== tokenTypes.ACCESS) {
+      throw new Error("Invalid token type");
+    }
+    const user = await User.findById(payload.sub);
+    if (!user) {
+      return done(null, false);
+    }
+    done(null, user);
+  } catch (error) {
+    done(error, false);
+  }
+};
+
+const jwtStrategy = new JwtStrategy(jwtOptions, jwtVerify);
+
+module.exports = {
+  jwtStrategy,
+};
