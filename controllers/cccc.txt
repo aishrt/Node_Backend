@@ -1,0 +1,46 @@
+const getManagers = catchAsync(async (req, res) => {
+  try {
+    const perPage = 10;
+    const page = req.query.page ? parseInt(req.query.page, 10) : 1;
+    const totalCount = await User.countDocuments();
+
+    const sortField = req.query.sortField || "location";
+    const sortOrder = req.query.sortOrder;
+    const sortOptions = { [sortField]: sortOrder };
+    const user = await User.find({ role: "Manager" })
+      .sort(sortOptions)
+      .skip(perPage * (page - 1))
+      .limit(perPage);
+    return res.status(200).json({
+      status: "200",
+      message: `Manager list fetched successfully.`,
+      data: user,
+      count: totalCount,
+      page: page,
+      totalPages: Math.ceil(totalCount / perPage),
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "500",
+      message: "An error occurred while fetching manager list.",
+      error: error.message,
+    });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+router.get("/managerList", managerController.getManagers);
+
+
+
+
+
+    const apiUrl = `http://localhost:4000/v1/manager/managerList?page=${page}&sortField=${sortField}&sortOrder=${sortOrder}`;

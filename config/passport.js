@@ -10,10 +10,7 @@ const jwtOptions = {
 
 const jwtVerify = async (payload, done) => {
   try {
-    console.log("JWT Payload:", payload);
     const decodedPayload = Buffer.from(payload, "hex").toString("utf-8");
-    console.log("JWT decodedPayload:", decodedPayload);
-
     if (payload.type !== tokenTypes.ACCESS) {
       throw new Error("Invalid token type");
     }
