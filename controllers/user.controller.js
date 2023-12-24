@@ -25,7 +25,8 @@ const getProfile = catchAsync(async (req, res) => {
 const updateProfile = catchAsync(async (req, res) => {
   try {
     const userId = req.params.id;
-    const userDetail = await User.findOneAndUpdate({ id: userId }, req.body, {
+    console.log(userId, "userId 0-------");
+    const userDetail = await User.findOneAndUpdate({ _id: userId }, req.body, {
       new: true,
     });
     userDetail.save();
