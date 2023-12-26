@@ -1,8 +1,5 @@
-const httpStatus = require("http-status");
 const catchAsync = require("../utils/catchAsync");
 const { User } = require("../models");
-const ApiError = require("../utils/ApiError");
-const { tokenService } = require("../services");
 
 const getProfile = catchAsync(async (req, res) => {
   try {
@@ -25,7 +22,6 @@ const getProfile = catchAsync(async (req, res) => {
 const updateProfile = catchAsync(async (req, res) => {
   try {
     const userId = req.params.id;
-    console.log(userId, "userId 0-------");
     const userDetail = await User.findOneAndUpdate({ _id: userId }, req.body, {
       new: true,
     });
@@ -46,7 +42,7 @@ const updateProfile = catchAsync(async (req, res) => {
 const deleteProfile = catchAsync(async (req, res) => {
   try {
     const userId = req.params.id;
-    await User.findOneAndDelete({ id: userId });
+    await User.findOneAndDelete({ _id: userId });
     return res.status(200).json({
       status: "200",
       message: "User deleted successfully!",
@@ -59,27 +55,32 @@ const deleteProfile = catchAsync(async (req, res) => {
     });
   }
 });
+
 const getList = catchAsync(async (req, res) => {
   const currentUser = req.user;
   const selectesRole = req.query.role;
   const searchName = req.query.name;
-  const searchEmail = req.query.email;
-
+  const perPage = 10;
+  const page = req.query.page ? parseInt(req.query.page, 10) : 1;
   const query = {
     _id: { $ne: currentUser },
     role: selectesRole,
   };
-
   if (searchName) {
     query.first_name = { $regex: new RegExp(searchName, "i") };
   }
-
   try {
-    const userList = await User.find(query);
+    const totalCount = await User.countDocuments(query);
+    const userList = await User.find(query)
+      .skip(perPage * (page - 1))
+      .limit(perPage);
     return res.status(200).json({
       status: "200",
       message: "User list fetched successfully!",
       data: userList,
+      page,
+      totalPages: Math.ceil(totalCount / perPage),
+      count: userList.length,
     });
   } catch (error) {
     return res.status(500).json({
