@@ -1,11 +1,13 @@
 const mongoose = require("mongoose");
-const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const { toJSON, paginate } = require("./plugins");
 const { roleNames } = require("../config/roles");
 
 const userSchema = mongoose.Schema(
   {
+    image: {
+      type: String,
+    },
     first_name: {
       type: String,
       required: true,
@@ -32,11 +34,6 @@ const userSchema = mongoose.Schema(
       unique: true,
       trim: true,
       lowercase: true,
-      validate(value) {
-        if (!validator.isEmail(value)) {
-          throw new Error("Invalid email");
-        }
-      },
     },
     role: {
       type: String,
@@ -46,14 +43,6 @@ const userSchema = mongoose.Schema(
     password: {
       type: String,
       trim: true,
-      minlength: 8,
-      validate(value) {
-        if (!value.match(/\d/) || !value.match(/[a-zA-Z]/)) {
-          throw new Error(
-            "Password must contain at least one letter and one number"
-          );
-        }
-      },
       private: true,
     },
   },
